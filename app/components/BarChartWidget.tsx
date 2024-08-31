@@ -1,5 +1,4 @@
 import { Bar } from 'react-chartjs-2';
-import 'chartjs-adapter-date-fns'; // Example of importing an adapter if needed
 
 const BarChartWidget = () => {
   const data = {
