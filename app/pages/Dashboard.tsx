@@ -1,20 +1,21 @@
-
 'use client';
 import { useEffect, useState } from 'react';
 import BarChartWidget from "../components/BarChartWidget";
 import DataTableWidget from "../components/DataTableWidget";
 import LineChartWidget from "../components/LineChartWidget";
-import Link from 'next/link';
 import Settings from './settings';
 
-const Dashboard = () => {
-  const [theme, setTheme] = useState('light');
-  const [filter, setFilter] = useState('all');
+// Define possible filter values
+type FilterType = 'all' | 'active' | 'inactive';
+
+const Dashboard: React.FC = () => {
+  const [theme, setTheme] = useState<string>('light');
+  const [filter, setFilter] = useState<FilterType>('all');
 
   useEffect(() => {
     // Load settings from local storage or an API
     const savedTheme = localStorage.getItem('dashboardTheme');
-    const savedFilter = localStorage.getItem('dataFilter');
+    const savedFilter = localStorage.getItem('dataFilter') as FilterType;
     
     if (savedTheme) setTheme(savedTheme);
     if (savedFilter) setFilter(savedFilter);
@@ -22,8 +23,7 @@ const Dashboard = () => {
 
   return (
     <div className={`dashboard ${theme === 'dark' ? 'bg-gray-800 text-white' : ''}`}>
-      {/* Apply filter logic to each widget */}
-      <Settings/>
+      <Settings />
       <LineChartWidget filter={filter} />
       <BarChartWidget filter={filter} />
       <DataTableWidget filter={filter} />

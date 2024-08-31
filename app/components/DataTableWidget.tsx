@@ -1,12 +1,25 @@
-"use client"
+'use client';
 
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { RootState } from '../store';
+import { RootState, AppDispatch } from '../store';
 import { fetchData } from '../store/dataSlice';
 
-const DataTableWidget = () => {
-  const dispatch = useDispatch();
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  status: string;
+}
+type FilterType = 'all' | 'active' | 'inactive';
+
+// Define props for the DataTableWidget
+interface DataTableWidgetProps {
+  filter: FilterType;
+}
+
+const DataTableWidget: React.FC<DataTableWidgetProps> = ({filter}) => {
+  const dispatch = useDispatch<AppDispatch>();
   const tableData = useSelector((state: RootState) => state.data.tableData);
   const status = useSelector((state: RootState) => state.data.status);
 
@@ -38,7 +51,7 @@ const DataTableWidget = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {tableData &&
-              tableData.map((user: any) => (
+              tableData.map((user: User) => (
                 <tr key={user.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {user.name}

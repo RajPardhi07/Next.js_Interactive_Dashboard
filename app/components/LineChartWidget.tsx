@@ -1,52 +1,51 @@
-'use client';
-
 import React from 'react';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  ChartOptions,
-  ChartData,
-} from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
-// Register the necessary Chart.js components
+// Define possible filter values
+type FilterType = 'all' | 'active' | 'inactive';
+
+// Define props for the LineChartWidget
+interface LineChartWidgetProps {
+  filter: FilterType;
+}
+
+// Register necessary Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-// Define the data and options with appropriate types
-const data: ChartData<'line'> = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-  datasets: [
-    {
-      label: 'Revenue',
-      data: [12, 19, 3, 5, 2, 3],
-      fill: false,
-      borderColor: 'rgba(75,192,192,1)',
-    },
-  ],
-};
+const LineChartWidget: React.FC<LineChartWidgetProps> = ({ filter }) => {
+  // Sample data and options; you might want to adjust based on filter value
+  const data = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+    datasets: [
+      {
+        label: 'Revenue',
+        data: [12, 19, 3, 5, 2, 3],
+        fill: false,
+        borderColor: 'rgba(75,192,192,1)',
+      },
+    ],
+  };
 
-const options: ChartOptions<'line'> = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: `Revenue Data - Filter: ${filter}`,
+      },
     },
-    title: {
-      display: true,
-      text: 'Revenue Data',
-    },
-  },
-};
+  };
 
-// Define the LineChartWidget component
-const LineChartWidget: React.FC = () => {
-  return <Line data={data} options={options} />;
+  return (
+    <div className="widget">
+      <h3 className="widget-title">Line Chart</h3>
+      <Line data={data} options={options} />
+    </div>
+  );
 };
 
 export default LineChartWidget;
